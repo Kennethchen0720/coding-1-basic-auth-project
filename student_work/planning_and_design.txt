@@ -4,32 +4,32 @@ APP PLANNING & DESIGN
 
 1. PROJECT NAME & THEME
 -------------------------
-- What is your app called, and what type of app is it?  
-- What style or vibe do you want users to experience?
-- What about your app will require a log-in structure?
+- What is your app called, and what type of app is it?  Secret Files it's a data storing app
+- What style or vibe do you want users to experience?   Kinda like a advance vibe kinda incognito mode
+- What about your app will require a log-in structure?  Yes
 
 2. CORE FUNCTIONALITY
 -------------------------
-- What are the essential features your app must have?  
-- What optional features could make your app more interactive or personalized?
+- What are the essential features your app must have?      A login and regrister and a drag photo and upload features for the photos and arrows to navigate
+- What optional features could make your app more interactive or personalized?    A show password and email verfication
 
 3. SECRET OR PERSONALIZED CONTENT
 
 -------------------------
-- What content will users see after logging in?  
-- Will this content change depending on who is using the app (admin, user, special user?)
+- What content will users see after logging in?  A upload and drag photo button
+- Will this content change depending on who is using the app (admin, user, special user?)   No
 
 4. USER EXPERIENCE (UX) DESIGN
 -------------------------
-- How should your app look and feel?
-- How will users navigate between pages?
+- How should your app look and feel?  It should look bland at first but as time goes by it will look good
+- How will users navigate between pages?  Using the arrow button we provide
 
 5. SECURITY FEATURES
 -------------------------
-- What password and authentication rules will you enforce?  
-- How will you protect secret pages from unauthorized access?
+- What password and authentication rules will you enforce?      Email verfication after a certain amount of attempts and like you need number, special character, etc.
+- How will you protect secret pages from unauthorized access?   A keycode
 
 6. OPTIONAL CREATIVE ENHANCEMENTS
 -------------------------
-- What customization or fun features could users enjoy?
-- Are there interactive elements, like games, quizzes, or badges, you could include?
+- What customization or fun features could users enjoy?   Maybe like you can change the color of your photo
+- Are there interactive elements, like games, quizzes, or badges, you could include?  badges like how many photos you have to earn one we might not do it
