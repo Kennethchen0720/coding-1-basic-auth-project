@@ -1,11 +1,25 @@
-from flask import Flask, request, redirect, url_for, render_template_string, session
+from flask import Flask, request, redirect, url_for, render_template_string, session 
+import sqlite3
 
 app = Flask(__name__)
 app.secret_key = "supersecretkey"  # needed for sessions
 
-users = {
-    "alice": "password123"
-}
+def get_db():
+    conn = sqlite3.connect("users.db")
+    conn.row_factory = sqlite3.Row
+    return conn
+
+def init_db():
+    conn = get_db()
+    conn.execute("""CREATE TABLE IF NOT EXISTS users(
+            username TEXT PRIMARY KEY,
+            password TEXT
+        )
+    """)
+    conn.commit()
+    conn.close()
+
+init_db()
 
 base_style = """
 <style>
@@ -57,7 +71,7 @@ a {
 </style>
 """
 
-login_page = base_style + """
+login_page = f"""{base_style}
 <div class="card">
 <h2>Login</h2>
 <form method="POST">
@@ -66,11 +80,11 @@ login_page = base_style + """
   <button type="submit">Login</button>
 </form>
 <a href="/register">Create an account</a>
-<p class="error">{{ error }}</p>
+<p class="error">{{{{ error }}}}</p>
 </div>
 """
 
-register_page = base_style + """
+register_page = f"""{base_style}
 <div class="card">
 <h2>Register</h2>
 <form method="POST">
@@ -79,19 +93,20 @@ register_page = base_style + """
   <button type="submit">Sign Up</button>
 </form>
 <a href="/">Back to login</a>
-<p class="error">{{ error }}</p>
+<p class="error">{{{{ error }}}}</p>
 </div>
 """
 
-secret_page = base_style + """
+secret_page = f"""{base_style}
 <div class="card">
 <h2>🎉 Secret Room</h2>
-<h3>Welcome, {{ username }}!</h3>
+<h3>Welcome, {{{{ username }}}}!</h3>
 <p>You got into the secret room!</p>
 <a href="/logout"><button>Logout</button></a>
 </div>
 """
 
+# ---------- ROUTES ----------
 @app.route("/", methods=["GET", "POST"])
 def login():
     error = ""
@@ -99,7 +114,14 @@ def login():
         username = request.form["username"]
         password = request.form["password"]
 
-        if username in users and users[username] == password:
+        conn = get_db()
+        user = conn.execute(
+            "SELECT * FROM users WHERE username=? AND password=?",
+            (username, password)
+        ).fetchone()
+        conn.close()
+
+        if user:
             session["user"] = username
             return redirect(url_for("secret"))
         else:
@@ -114,13 +136,22 @@ def register():
         username = request.form["username"]
         password = request.form["password"]
 
-        if username in users:
-            error = "Username already exists"
-        elif not username or not password:
+        if not username or not password:
             error = "Fields cannot be empty"
         else:
-            users[username] = password
-            return redirect(url_for("login"))
+            try:
+                conn = get_db()
+                conn.execute(
+                    "INSERT INTO users (username, password) VALUES (?, ?)",
+                    (username, password)
+                )
+                conn.commit()
+                conn.close()
+                if user:
+                    session["user"] = username
+                    return redirect(url_for("secret"))
+            except sqlite3.IntegrityError:
+                error = "Username already exists"
 
     return render_template_string(register_page, error=error)
 
@@ -135,4 +166,5 @@ def logout():
     session.pop("user", None)
     return redirect(url_for("login"))
 
-app.run(host="0.0.0.0", port=5000)
+# ---------- RUN ----------
+app.run(host="0.0.0.0", port=5100)
