@@ -5,17 +5,18 @@
 
 <!-- TODO: Create a form that sends a POST request -->
 
-
 <form method="POST">
 
-    <!-- TODO: Add input for title -->
-    
-    <!-- TODO: Add input for content -->
+    <label for="title">Title:</label>
+    <input type="text" id="title" name="title" required>
 
-    <!-- TODO: Add submit button -->
+    <label for="content">Content:</label>
+    <input id="content" name="content" required>
+
+    <button type="submit">Create Entry</button>
 
 </form>
 
-<!-- TODO: Add a link back to dashboard -->
+<a href="/dashboard">Back to Dashboard</a>
 
 {% endblock %}
