@@ -80,12 +80,12 @@ def dashboard():
     conn = get_db()
     if "user" not in session:
         return redirect(url_for("login"))
-    entries = conn.execute(
-        "SELECT * FROM entries WHERE user=?",
-        (session["user"],)
-    ).fetchall()
-    conn.close()
-    return render_template("dashboard.html", entries=entries, username=session["user"])
+            entries = conn.execute(
+            "SELECT * FROM entries WHERE user=?",
+            (session["user"],)
+        ).fetchall()
+        conn.close()
+        return render_template("dashboard.html", entries=entries, username=session["user"])
 
 
 # ---------- CREATE ----------
@@ -110,13 +110,6 @@ def create():
 
 
 # ---------- UPDATE ----------
-# TODO: Create a route like /edit/<id>
-# This page should:
-# - Load existing data
-# - Show it in a form
-# - Update the database on submit
-
-"""
 @app.route("/edit/<int:id>", methods=["GET", "POST"])
 def edit(id):
     if "user" not in session:
@@ -141,15 +134,9 @@ def edit(id):
         return redirect(url_for("dashboard"))
 
     return render_template("edit.html", entry=entry)
-"""
+
 
 # ---------- DELETE ----------
-# TODO: Create a route like /delete/<id>
-# This should:
-# - Delete an entry from the database
-# - Redirect back to dashboard
-
-"""
 @app.route("/delete/<int:id>")
 def delete(id):
     if "user" not in session:
@@ -162,7 +149,7 @@ def delete(id):
     # TODO: Commit and close
 
     return redirect(url_for("dashboard"))
-"""
+
 
 
 @app.route("/logout")

@@ -1,7 +1,7 @@
 import sqlite3
 
 def get_db():
-    conn = sqlite3.connect("database.db")
+    conn = sqlite3.connect("users.db")
     conn.row_factory = sqlite3.Row
     return conn
 
@@ -15,23 +15,12 @@ def init_db():
         )
     """)
     conn.execute("""
-        CREATE TABLE IF NOT EXISTS entries (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY,
             user TEXT,
             title TEXT,
-            content TEXT,
-            FOREIGN KEY (user) REFERENCES users(username)
+            content TEXT
         )
     """)
-    conn.execute("""
-        CREATE TABLE IF NOT EXISTS entries (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            user TEXT,
-            title TEXT,
-            content TEXT,
-            FOREIGN KEY (user) REFERENCES users(username)
-        )
-    """)
-
     conn.commit()
     conn.close()
