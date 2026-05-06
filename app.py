@@ -80,12 +80,12 @@ def dashboard():
     conn = get_db()
     if "user" not in session:
         return redirect(url_for("login"))
-        entries = conn.execute(
-            "SELECT * FROM entries WHERE user=?",
-            (session["user"],)
-        ).fetchall()
-        conn.close()
-        return render_template("dashboard.html", entries=entries, username=session["user"])
+    entries = conn.execute(
+        "SELECT * FROM entries WHERE user=?",
+        (session["user"],)
+    ).fetchall()
+    conn.close()
+    return render_template("dashboard.html", entries=entries, username=session["user"])
 
 
 # ---------- CREATE ----------
@@ -95,14 +95,18 @@ def create():
         return redirect(url_for("login"))
 
     if request.method == "POST":
-        # TODO: Get form data (title, content)
+        title = request.form["title"].strip()
+        content = request.form["content"].strip()
 
-        # TODO: Connect to database
+        conn = get_db()
 
-        # TODO: Insert into entries table
-        # IMPORTANT: include session["user"]
+        conn.execute(
+            "INSERT INTO entries (user, title, content) VALUES (?, ?, ?)",
+            (session["user"], title, content)
+        )
 
-        # TODO: Commit and close
+        conn.commit()
+        conn.close()
 
         return redirect(url_for("dashboard"))
 
@@ -115,13 +119,16 @@ def edit(id):
     if "user" not in session:
         return redirect(url_for("login"))
 
-    # TODO: Connect to database
+    conn = get_db()
 
-    # TODO: Get entry WHERE id AND user
-    # This prevents editing other users' data
+    entry = conn.execute(
+        "SELECT * FROM entries WHERE id=? AND user=?",
+        (id, session["user"])
+    ).fetchone()
 
-    # if not entry:
-    #     return "Not allowed"
+
+    if not entry:
+        return "Not allowed"
 
     if request.method == "POST":
         # TODO: Get updated form data
@@ -142,11 +149,15 @@ def delete(id):
     if "user" not in session:
         return redirect(url_for("login"))
 
-    # TODO: Connect to database
+    conn = get_db()
 
-    # TODO: Delete entry WHERE id AND user
+    deleted = conn.execute(
+        "DELETE FROM entries WHERE id=? AND user=?",
+        (id, session["user"])
+    ).rowcount
 
-    # TODO: Commit and close
+    conn.commit()
+    conn.close()
 
     return redirect(url_for("dashboard"))
 

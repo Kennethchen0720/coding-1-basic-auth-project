@@ -15,7 +15,7 @@ def init_db():
         )
     """)
     conn.execute("""
-        CREATE TABLE IF NOT EXISTS users (
+        CREATE TABLE IF NOT EXISTS entries (
             id INTEGER PRIMARY KEY,
             user TEXT,
             title TEXT,
