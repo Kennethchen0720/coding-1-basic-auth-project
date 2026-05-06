@@ -1,16 +1,16 @@
 body {
     font-family: Arial, sans-serif;
-    background: #f4f6f8;
+    background: #2e2d2d;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
 }
 .card {
-    background: white;
+    background: rgb(41, 38, 38);
     padding: 25px;
     border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 10px rgba(51, 49, 49, 0.1);
     width: 300px;
     text-align: center;
 }
@@ -28,4 +28,13 @@ button {
 }
 .error {
     color: red;
+}
+.link {
+    display: inline-block;
+    margin-top: 15px;
+    color: #dddddd;
+    text-decoration: none;
+}
+.link:hover {
+    text-decoration: underline;
 }

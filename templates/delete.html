@@ -12,11 +12,11 @@
 
     <form method="POST" action="/delete/{{ entry['id'] }}">
         <button type="submit">Confirm Delete</button>
-        <a href="/dashboard">Cancel</a>
+        <a href="/dashboard" class="link">Cancel</a>
     </form>
 {% else %}
     <p>Entry not found.</p>
-    <a href="/dashboard">Return to dashboard</a>
+    <a href="/dashboard" class="link">Return to dashboard</a>
 {% endif %}
 
 {% endblock %}

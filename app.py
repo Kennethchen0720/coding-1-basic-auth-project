@@ -6,9 +6,14 @@ from flask import Flask, request, redirect, url_for, render_template, session
 from database import get_db, init_db
 import bcrypt
 import re
+from werkzeug.utils import secure_filename
+import os
 
 app = Flask(__name__)
 app.secret_key = "supersecretkey"
+
+UPLOAD_FOLDER = os.path.join(app.root_path, "static", "uploads")
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 init_db()
 
@@ -66,11 +71,12 @@ def register():
                 )
                 conn.commit()
 
-                return redirect(url_for("login"))
+                return redirect(url_for("dashboard"))
             except:
                 conn.rollback()
                 error = "Username already exists or error occurred"
             finally:
+                session["user"] = username
                 conn.close()
 
     return render_template("register.html", error=error)
@@ -97,12 +103,18 @@ def create():
     if request.method == "POST":
         title = request.form["title"].strip()
         content = request.form["content"].strip()
+        file = request.files.get('image_file')
+    
+        filename = None
+
+        if file and file.filename:
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(UPLOAD_FOLDER, filename))
 
         conn = get_db()
-
         conn.execute(
-            "INSERT INTO entries (user, title, content) VALUES (?, ?, ?)",
-            (session["user"], title, content)
+            "INSERT INTO entries (user, title, content, image) VALUES (?, ?, ?, ?)",
+            (session["user"], title, content, filename)
         )
 
         conn.commit()

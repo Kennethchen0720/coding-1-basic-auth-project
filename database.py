@@ -19,7 +19,8 @@ def init_db():
             id INTEGER PRIMARY KEY,
             user TEXT,
             title TEXT,
-            content TEXT
+            content TEXT,
+            image TEXT
         )
     """)
     conn.commit()
